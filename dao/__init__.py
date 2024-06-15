@@ -1,8 +1,9 @@
 import sys
 sys.path.append("\\ServiceHotel\\dao\\")
 
-from apartment import Apartment, Base
-from hotel import Hotel
-from reserve import Reservation
-from status import Status
-from type import Type
+from dao.base import Base
+from dao.hotel import Hotel
+from dao.type import Type
+from dao.apartment import Apartment
+from dao.reserve import Reservation
+
