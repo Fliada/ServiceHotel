@@ -110,3 +110,55 @@ class DBHelper:
     def get_apartments_by_ids(self, apartment_ids):
         apartments = self.session.query(Apartment).filter(Apartment.id.in_(apartment_ids)).all()
         return apartments
+    
+
+    def get_hotels_with_available_apartments(self, start_date, end_date, city=None, capacity=None, hotel_name=None, type_name=None):
+        query = self.session.query(Apartment).join(Apartment.type).join(Apartment.hotel).options(
+            joinedload(Apartment.type),
+            joinedload(Apartment.hotel)
+        )
+
+        if city:
+            query = query.filter(Hotel.city == city)
+        if capacity:
+            query = query.filter(Type.capacity == capacity)
+        if hotel_name:
+            query = query.filter(Hotel.name == hotel_name)
+        if type_name:
+            query = query.filter(Type.name == type_name)
+
+        subquery = self.session.query(Reservation.apartment_id).filter(
+            and_(
+                Reservation.arrival_date < end_date,
+                Reservation.depsrture_date > start_date
+            )
+        ).subquery()
+
+        query = query.filter(Apartment.id.notin_(subquery))
+
+        available_apartments = query.all()
+
+        hotels_info = {}
+        for apartment in available_apartments:
+            hotel = apartment.hotel
+            price_per_hour = apartment.type.price
+            total_hours = (end_date - start_date).total_seconds() / 3600
+            cost = price_per_hour * total_hours
+
+            if hotel.id not in hotels_info:
+                hotels_info[hotel.id] = {
+                    'id': hotel.id,
+                    'name': hotel.name,
+                    'location': {
+                        'city': hotel.city,
+                        'street': hotel.street,
+                        'house_number': hotel.house_number
+                    },
+                    'min_cost': cost,
+                    'max_cost': cost
+                }
+            else:
+                hotels_info[hotel.id]['min_cost'] = min(hotels_info[hotel.id]['min_cost'], cost)
+                hotels_info[hotel.id]['max_cost'] = max(hotels_info[hotel.id]['max_cost'], cost)
+
+        return list(hotels_info.values())

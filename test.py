@@ -29,11 +29,11 @@ def main():
     # helper.insert([reservation])  # Обратите внимание, что insert ожидает список
     # helper.print_info()
 
-    start_date = datetime(2024, 7, 8)
-    end_date = datetime(2024, 7, 16)
-    available_apartments = helper.get_available_apartments(start_date, end_date)
-    for apartment in available_apartments:
-        print(apartment)
+    # start_date = datetime(2024, 7, 10)
+    # end_date = datetime(2024, 7, 16)
+    # available_apartments = helper.get_available_apartments(start_date, end_date, capacity=2)
+    # for apartment in available_apartments:
+    #     print(apartment.id, apartment.type.capacity, apartment.hotel_)
 
     # start_date = datetime(2024, 7, 8)
     # end_date = datetime(2024, 7, 16)
@@ -47,6 +47,13 @@ def main():
     # apartments = helper.get_apartments_by_ids(apartment_ids)
     # for apartment in apartments:
     #     print(apartment.id, apartment.number, apartment.type.name)
+    start_date = datetime(2024, 7, 18, 14, 0)
+    end_date = datetime(2024, 7, 21, 11, 0)
+    city = 'Москва'
+
+    hotels = helper.get_hotels_with_available_apartments(start_date, end_date, city)
+    for hotel in hotels:
+        print(hotel)
 
 
 if __name__ == '__main__':
