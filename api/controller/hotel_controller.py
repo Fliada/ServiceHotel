@@ -1,19 +1,16 @@
 from datetime import datetime, timedelta
-
-from fastapi import APIRouter, HTTPException
-
+from fastapi import APIRouter, HTTPException, Depends
 from utils.schemas import HotelRequest, HotelResponse
+from db_helper.DBHelper import DBHelper 
 
 hotel_routes = APIRouter()
-
 
 @hotel_routes.get("/")
 def read_root():
     return {"Hello": "World"}
 
-
 @hotel_routes.post("/search_hotels", response_model=list[HotelResponse])
-async def search_hotels(request: HotelRequest, helper):
+async def search_hotels(request: HotelRequest, helper: DBHelper = Depends()):
     try:
         available_hotels = helper.get_hotels_with_available_apartments(
             start_date=request.date,
