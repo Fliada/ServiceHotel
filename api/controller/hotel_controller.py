@@ -13,6 +13,9 @@ hotel_routes = APIRouter()
 @hotel_routes.post("/search", response_model=list[HotelResponse])
 async def search_hotels(request: HotelRequest):
     try:
+        if request.end_date < request.start_date:
+            raise "Время отбытия должно быть больше времени прибытия"
+        
         available_hotels = helper.get_hotels_with_available_apartments(
             start_date=request.start_date,
             end_date=request.end_date,
@@ -21,9 +24,6 @@ async def search_hotels(request: HotelRequest):
             hotel_name=request.hotel_name, 
             type_name=request.type_name
         )
-
-        if request.end_date < request.start_date:
-            raise "Время отбытия должно быть больше времени прибытия"
 
         filtered_hotels = []
         for hotel in available_hotels:
