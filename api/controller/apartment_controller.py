@@ -52,3 +52,22 @@ async def get_all_apartments_by_ids(request: ApartmentList):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@apartment_routes.post("/availability", response_model=list[ApartmentAvailabilityResponse])
+async def check_apartment_availability(request: ApartmentAvailabilityRequest):
+    try:
+        apartments = helper.check_apartment_availability(request.start_date, request.end_date, request.id)
+
+        result_apartments = []
+        for ap in apartments:
+            apartments_info = {
+                "id": ap.id,
+                "status": ap.status
+            }
+            result_apartments.append(ApartmentAvailabilityResponse(**apartments_info))
+
+        return result_apartments
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
