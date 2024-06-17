@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional
-from datetime import datetime
+from datetime import datetime, date
+
 
 class HotelResponse(BaseModel):
     id: int
@@ -35,3 +36,10 @@ class ApartmentsResponse(BaseModel):
 
 class ApartmentList(BaseModel):
     apartments: list[int] = []
+
+
+class AvailableApartmentsRequest(BaseModel):
+    start: date
+    end: date
+    city: str
+    hotel_name: str
