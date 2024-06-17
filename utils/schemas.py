@@ -41,7 +41,9 @@ class ApartmentList(BaseModel):
 
 
 class AvailableApartmentsRequest(BaseModel):
-    start: datetime
-    end: datetime
+    start_date: datetime
+    end_date: datetime
     city: Optional[str] = None
+    capacity: Optional[int] = None
     hotel_name: Optional[str] = None
+    type_name: Optional[str] = None
