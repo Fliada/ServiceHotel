@@ -55,6 +55,10 @@ class ApartmentAvailabilityRequest(BaseModel):
     end_date: datetime
 
 
+class ApartmentAvailabilityList(BaseModel):
+    apartments: list[ApartmentAvailabilityRequest] = []
+
+
 class ApartmentAvailabilityResponse(BaseModel):
     id: int
     status: bool
