@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Optional
-from datetime import datetime, date
+from datetime import datetime
 
 
 class HotelResponse(BaseModel):
@@ -9,6 +9,7 @@ class HotelResponse(BaseModel):
     location: dict
     min_cost: datetime
     max_cost: datetime
+
 
 class HotelsResponse(BaseModel):
     hotels: List[HotelResponse]
@@ -23,6 +24,7 @@ class HotelRequest(BaseModel):
     capacity: Optional[int] = None
     hotel_name: Optional[str] = None
     type_name: Optional[str] = None
+
 
 class ApartmentsResponse(BaseModel):
     id: int
@@ -39,7 +41,7 @@ class ApartmentList(BaseModel):
 
 
 class AvailableApartmentsRequest(BaseModel):
-    start: date
-    end: date
-    city: str
-    hotel_name: str
+    start: datetime
+    end: datetime
+    city: Optional[str] = None
+    hotel_name: Optional[str] = None

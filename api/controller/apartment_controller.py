@@ -9,7 +9,7 @@ apartment_routes = APIRouter()
 @apartment_routes.post("/available", response_model=list[ApartmentsResponse])
 async def get_all_available_apartments(request: AvailableApartmentsRequest):
     try:
-        apartments = helper.get_available_apartments(request.start, request.end, request.city, request.hotel_name)
+        apartments = helper.get_available_apartments(request.start, request.end, request.city, request.capacity, request.hotel_name, request.type_name)
 
         result_apartments = []
         for ap in apartments:
