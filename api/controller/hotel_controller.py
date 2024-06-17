@@ -10,7 +10,7 @@ from config import helper
 hotel_routes = APIRouter()
 
 
-@hotel_routes.post("/search_hotels", response_model=list[HotelResponse])
+@hotel_routes.post("/search", response_model=list[HotelResponse])
 async def search_hotels(request: HotelRequest):
     try:
         available_hotels = helper.get_hotels_with_available_apartments(
