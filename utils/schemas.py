@@ -7,8 +7,8 @@ class HotelResponse(BaseModel):
     id: int
     name: str
     location: dict
-    min_cost: datetime
-    max_cost: datetime
+    min_cost: int
+    max_cost: int
 
 
 class HotelsResponse(BaseModel):
