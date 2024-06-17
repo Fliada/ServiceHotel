@@ -55,6 +55,9 @@ class ApartmentsBookingRequest(BaseModel):
     start_date: datetime
     end_date: datetime
 
+class ApartmentBookingList(BaseModel):
+    apartments: list[ApartmentsBookingRequest]
+
 
 class ApartmentAvailabilityRequest(BaseModel):
     id: int

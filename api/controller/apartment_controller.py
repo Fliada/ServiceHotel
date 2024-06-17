@@ -32,14 +32,12 @@ async def get_all_available_apartments(request: AvailableApartmentsRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@apartment_routes.post("/booking", response_model=list[ApartmentsResponse])
-async def apartment_booking(request: ApartmentsBookingRequest):
-    try:
-
-        for ap in request:
+@apartment_routes.post("/booking")
+async def apartment_booking(request: ApartmentBookingList):
+    try:        
+        reservations = []
+        for ap in request.apartments:
             reservation = Reservation()
-            if reservation.depsrture_date < reservation.arrival_date:
-                raise "Время отбытия должно быть больше времени прибытия"
 
             reservation.apartment_id = ap.id
             reservation.person_id = ap.person_id
@@ -47,8 +45,10 @@ async def apartment_booking(request: ApartmentsBookingRequest):
             reservation.arrival_date = ap.start_date
             reservation.depsrture_date = ap.end_date
 
-            helper.insert([reservation])
-            helper.print_info()
+            reservations.append(reservation)
+            print(ap)
+
+        helper.insert(reservations)
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
