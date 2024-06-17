@@ -5,24 +5,9 @@ from db_helper.DBHelper import DBHelper
 from local_settings import postresql as settings
 from utils.schemas import *
 
+from config import helper
+
 hotel_routes = APIRouter()
-
-
-@hotel_routes.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-keys = ['pguser', 'pgpasswd', 'pghost', 'pgport', 'pgdb']
-if not all(key in keys for key in settings.keys()):
-    raise Exception('Bad confid file')
-
-helper = DBHelper(
-    settings['pguser'],
-    settings['pgpasswd'],
-    settings['pghost'],
-    settings['pgport'],
-    settings['pgdb']
-)
 
 @hotel_routes.post("/search_hotels", response_model=list[HotelResponse])
 async def search_hotels(request: HotelRequest):
