@@ -47,3 +47,14 @@ class AvailableApartmentsRequest(BaseModel):
     capacity: Optional[int] = None
     hotel_name: Optional[str] = None
     type_name: Optional[str] = None
+
+
+class ApartmentAvailabilityRequest(BaseModel):
+    id: int
+    start_date: datetime
+    end_date: datetime
+
+
+class ApartmentAvailabilityResponse(BaseModel):
+    id: int
+    status: bool
