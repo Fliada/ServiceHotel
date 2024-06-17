@@ -61,11 +61,7 @@ async def check_apartment_availability(request: ApartmentAvailabilityRequest):
 
         result_apartments = []
         for ap in apartments:
-            apartments_info = {
-                "id": ap.id,
-                "status": ap.status
-            }
-            result_apartments.append(ApartmentAvailabilityResponse(**apartments_info))
+            result_apartments.append(ApartmentAvailabilityResponse(**ap))
 
         return result_apartments
 
