@@ -81,10 +81,7 @@ async def get_all_apartments_by_ids(request: ApartmentList):
 @apartment_routes.post("/availability", response_model=list[ApartmentAvailabilityResponse])
 async def check_apartment_availability(request: ApartmentAvailabilityList):
     try:
-        if request.end_date < request.start_date:
-            raise "Время отбытия должно быть больше времени прибытия"
-
-        apartments = helper.check_apartment_availability(request.start_date, request.end_date, request.id)
+        apartments = helper.check_apartment_availability(request.apartments)
 
         result_apartments = []
         for ap in apartments:

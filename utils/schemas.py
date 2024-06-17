@@ -63,7 +63,7 @@ class ApartmentAvailabilityRequest(BaseModel):
 
 
 class ApartmentAvailabilityList(BaseModel):
-    apartments: list[ApartmentAvailabilityRequest] = []
+    apartments: list[ApartmentAvailabilityRequest]
 
 
 class ApartmentAvailabilityResponse(BaseModel):
