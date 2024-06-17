@@ -20,14 +20,13 @@ class DBHelper:
         Base.metadata.create_all(self.engine)
 
     def insert(self, data):
-        for product in data:
-            self.session.add(product)
-            try:
+        try:
+            for product in data:
+                self.session.add(product)
                 self.session.commit()
-            except IntegrityError as e:
-                print(e)
-                self.session.rollback()
-                continue
+        except Exception as e:
+            print(e)
+            self.session.rollback()
 
     def print_info(self):
         products = self.session.query(Reservation).all()
