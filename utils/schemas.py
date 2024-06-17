@@ -49,6 +49,13 @@ class AvailableApartmentsRequest(BaseModel):
     type_name: Optional[str] = None
 
 
+class ApartmentsBookingRequest(BaseModel):
+    id: int
+    person_id: int
+    start_date: datetime
+    end_date: datetime
+
+
 class ApartmentAvailabilityRequest(BaseModel):
     id: int
     start_date: datetime
