@@ -13,8 +13,6 @@ hotel_routes = APIRouter()
 @hotel_routes.post("/search_hotels", response_model=list[HotelResponse])
 async def search_hotels(request: HotelRequest):
     try:
-        #print(request.city, request.capacity)
-
         available_hotels = helper.get_hotels_with_available_apartments(
             start_date=request.start_date,
             end_date=request.end_date,
