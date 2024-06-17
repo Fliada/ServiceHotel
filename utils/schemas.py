@@ -14,6 +14,7 @@ class HotelsResponse(BaseModel):
     min_price: Optional[int] = None
     max_price: Optional[int] = None
 
+
 class HotelRequest(BaseModel):
     city: str
     start_date: Optional[datetime]
@@ -21,3 +22,16 @@ class HotelRequest(BaseModel):
     capacity: Optional[int] = None
     hotel_name: Optional[str] = None
     type_name: Optional[str] = None
+
+class ApartmentsResponse(BaseModel):
+    id: int
+    number: int
+    hotel_name: str
+    hotel_city: str
+    cost: int
+    type_capacity: int
+    type_name: str
+
+
+class ApartmentList(BaseModel):
+    apartments: list[int] = []

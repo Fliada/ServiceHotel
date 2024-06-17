@@ -1,10 +1,12 @@
 from datetime import datetime, timedelta
 from fastapi import APIRouter, HTTPException, Depends
-from utils.schemas import HotelRequest, HotelResponse
+
 from db_helper.DBHelper import DBHelper 
 from local_settings import postresql as settings
+from utils.schemas import *
 
 hotel_routes = APIRouter()
+
 
 @hotel_routes.get("/")
 def read_root():
@@ -44,6 +46,30 @@ async def search_hotels(request: HotelRequest):
             filtered_hotels.append(HotelResponse(**hotel))
 
         return filtered_hotels
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@hotel_routes.post("/apartments", response_model=list[ApartmentsResponse])
+async def get_apartments_by_ids(request: ApartmentList, helper: DBHelper = Depends()):
+    try:
+        apartments = helper.get_apartments_by_ids(request.apartments)
+
+        result_apartments = []
+        for ap in apartments:
+            apartments_info = {
+                "id": ap.id,
+                "number": ap.number,
+                "hotel_name": ap.hotel.name,
+                "hotel_city": ap.hotel.city,
+                "cost": ap.type.price,
+                "type_capacity": ap.type.capacity,
+                "type_name": ap.type.name
+            }
+            result_apartments.append(ApartmentsResponse(**apartments_info))
+
+        return result_apartments
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
