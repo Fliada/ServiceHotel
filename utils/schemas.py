@@ -7,8 +7,8 @@ class HotelResponse(BaseModel):
     id: int
     name: str
     location: dict
-    min_cost: datetime
-    max_cost: datetime
+    min_cost: int
+    max_cost: int
 
 
 class HotelsResponse(BaseModel):
@@ -41,7 +41,9 @@ class ApartmentList(BaseModel):
 
 
 class AvailableApartmentsRequest(BaseModel):
-    start: datetime
-    end: datetime
+    start_date: datetime
+    end_date: datetime
     city: Optional[str] = None
+    capacity: Optional[int] = None
     hotel_name: Optional[str] = None
+    type_name: Optional[str] = None
