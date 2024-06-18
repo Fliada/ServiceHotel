@@ -87,7 +87,11 @@ async def check_apartment_availability(request: ApartmentAvailabilityList):
         for ap in apartments:
             result_apartments.append(ApartmentAvailabilityResponse(**ap))
 
-        return result_apartments
+        return {
+            "user_id": apartments.user_id,
+            "order_id": apartments.order_id,
+            "apartment": result_apartments
+            }
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

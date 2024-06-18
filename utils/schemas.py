@@ -66,9 +66,13 @@ class ApartmentAvailabilityRequest(BaseModel):
 
 
 class ApartmentAvailabilityList(BaseModel):
+    user_id: int
+    order_id: int
     apartments: list[ApartmentAvailabilityRequest]
 
 
 class ApartmentAvailabilityResponse(BaseModel):
+    user_id: int
+    order_id: int
     id: int
     status: bool
