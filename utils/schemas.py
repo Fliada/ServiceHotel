@@ -64,6 +64,9 @@ class ApartmentAvailabilityRequest(BaseModel):
     start_date: datetime
     end_date: datetime
 
+class ApartmentAvailabilityResponse(BaseModel):
+    id: int
+    status: bool
 
 class ApartmentAvailabilityList(BaseModel):
     user_id: int
@@ -71,8 +74,7 @@ class ApartmentAvailabilityList(BaseModel):
     apartments: list[ApartmentAvailabilityRequest]
 
 
-class ApartmentAvailabilityResponse(BaseModel):
+class ApartmentAvailabilityResponseList(BaseModel):
     user_id: int
     order_id: int
-    id: int
-    status: bool
+    apartments: list[ApartmentAvailabilityResponse]

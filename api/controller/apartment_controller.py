@@ -78,7 +78,7 @@ async def get_all_apartments_by_ids(request: ApartmentList):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@apartment_routes.post("/availability", response_model=list[ApartmentAvailabilityResponse])
+@apartment_routes.post("/availability", response_model=ApartmentAvailabilityResponseList)
 async def check_apartment_availability(request: ApartmentAvailabilityList):
     try:
         apartments = helper.check_apartment_availability(request.apartments)
@@ -88,9 +88,9 @@ async def check_apartment_availability(request: ApartmentAvailabilityList):
             result_apartments.append(ApartmentAvailabilityResponse(**ap))
 
         return {
-            "user_id": apartments.user_id,
-            "order_id": apartments.order_id,
-            "apartment": result_apartments
+            "user_id": request.user_id,
+            "order_id": request.order_id,
+            "apartments": result_apartments
             }
 
     except Exception as e:
