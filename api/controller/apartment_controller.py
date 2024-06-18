@@ -32,14 +32,12 @@ async def get_all_available_apartments(request: AvailableApartmentsRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@apartment_routes.post("/booking", response_model=list[ApartmentsResponse])
-async def apartment_booking(request: ApartmentsBookingRequest):
-    try:
-
-        for ap in request:
+@apartment_routes.post("/booking")
+async def apartment_booking(request: ApartmentBookingList):
+    try:        
+        reservations = []
+        for ap in request.apartments:
             reservation = Reservation()
-            if reservation.depsrture_date < reservation.arrival_date:
-                raise "Время отбытия должно быть больше времени прибытия"
 
             reservation.apartment_id = ap.id
             reservation.person_id = ap.person_id
@@ -47,8 +45,10 @@ async def apartment_booking(request: ApartmentsBookingRequest):
             reservation.arrival_date = ap.start_date
             reservation.depsrture_date = ap.end_date
 
-            helper.insert([reservation])
-            helper.print_info()
+            reservations.append(reservation)
+            print(ap)
+
+        helper.insert(reservations)
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -78,19 +78,20 @@ async def get_all_apartments_by_ids(request: ApartmentList):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@apartment_routes.post("/availability", response_model=list[ApartmentAvailabilityResponse])
+@apartment_routes.post("/availability", response_model=ApartmentAvailabilityResponseList)
 async def check_apartment_availability(request: ApartmentAvailabilityList):
     try:
-        if request.end_date < request.start_date:
-            raise "Время отбытия должно быть больше времени прибытия"
-
-        apartments = helper.check_apartment_availability(request.start_date, request.end_date, request.id)
+        apartments = helper.check_apartment_availability(request.apartments)
 
         result_apartments = []
         for ap in apartments:
             result_apartments.append(ApartmentAvailabilityResponse(**ap))
 
-        return result_apartments
+        return {
+            "user_id": request.user_id,
+            "order_id": request.order_id,
+            "apartments": result_apartments
+            }
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

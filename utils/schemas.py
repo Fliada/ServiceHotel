@@ -55,17 +55,26 @@ class ApartmentsBookingRequest(BaseModel):
     start_date: datetime
     end_date: datetime
 
+class ApartmentBookingList(BaseModel):
+    apartments: list[ApartmentsBookingRequest]
+
 
 class ApartmentAvailabilityRequest(BaseModel):
     id: int
     start_date: datetime
     end_date: datetime
 
-
-class ApartmentAvailabilityList(BaseModel):
-    apartments: list[ApartmentAvailabilityRequest] = []
-
-
 class ApartmentAvailabilityResponse(BaseModel):
     id: int
     status: bool
+
+class ApartmentAvailabilityList(BaseModel):
+    user_id: int
+    order_id: int
+    apartments: list[ApartmentAvailabilityRequest]
+
+
+class ApartmentAvailabilityResponseList(BaseModel):
+    user_id: int
+    order_id: int
+    apartments: list[ApartmentAvailabilityResponse]

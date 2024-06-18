@@ -20,14 +20,13 @@ class DBHelper:
         Base.metadata.create_all(self.engine)
 
     def insert(self, data):
-        for product in data:
-            self.session.add(product)
-            try:
+        try:
+            for product in data:
+                self.session.add(product)
                 self.session.commit()
-            except IntegrityError as e:
-                print(e)
-                self.session.rollback()
-                continue
+        except Exception as e:
+            print(e)
+            self.session.rollback()
 
     def print_info(self):
         products = self.session.query(Reservation).all()
@@ -85,24 +84,24 @@ class DBHelper:
         available_apartments = query.all()
         return available_apartments
     
-    def check_apartment_availability(self, start_date, end_date, apartment_ids):
+    def check_apartment_availability(self, apartments: list[dict]):
         availability = []
 
-        for apartment_id in apartment_ids:
+        for apartment in apartments:
             # Подзапрос для поиска пересекающихся бронирований
             overlapping_reservations = self.session.query(Reservation).filter(
                 and_(
-                    Reservation.apartment_id == apartment_id,
-                    Reservation.arrival_date < end_date,
-                    Reservation.depsrture_date > start_date
+                    Reservation.apartment_id == apartment.id,
+                    Reservation.arrival_date < apartment.end_date,
+                    Reservation.depsrture_date > apartment.start_date
                 )
             ).all()
 
             # Определение статуса доступности
             if overlapping_reservations:
-                availability.append({'apartment_id': apartment_id, 'status': False})
+                availability.append({'id': apartment.id, 'status': False})
             else:
-                availability.append({'apartment_id': apartment_id, 'status': True})
+                availability.append({'id': apartment.id, 'status': True})
 
         return availability
     
